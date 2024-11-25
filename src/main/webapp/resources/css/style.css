@@ -1,0 +1,321 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.modal-header{
+	background: linear-gradient(135deg, #1b2a41, #1e3a56);
+}
+
+.modal-body{
+	background-color: #1D334C;
+}
+
+.modal-body > .form-group{
+	text-align:left ;
+}
+
+.hidden-content{
+	width:90%; top:10px;
+}
+
+.modal-body > .form-group> a{
+	border: solid #3b5998 1px;
+	border-radius: 20%;
+	padding-left: 5px;
+	padding-right: 5px;
+	margin-left: 10px;
+	background-color: white;
+	color: rgb(74, 144, 226);
+}
+
+.modal-footer{
+	background-color: #1B2A41;
+}
+
+.container{
+    align-items: center;
+    justify-content: center;
+}
+
+#Logoo {
+    font-family: "Sevillana", cursive;
+    font-size: 100px;
+    font-weight: 400;
+    color: #4a90e2;
+    
+}
+
+.vid {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: -60px;
+    left: 0px;
+    opacity: 0.9;
+    z-index: -1;
+}
+
+.vid video {
+    width: 100%;
+    min-width: 1600px;
+}
+
+h3 {
+    border: 1px solid #4a90e2;
+    color: #ffffff;
+    background-color: #1e3a56;
+    padding: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 10;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom:27px;
+}
+
+#logo, .btn, button, .list-group-item, img, textarea, input, .form-select {
+    color: #ffffff;
+    border: solid #1e3a56 0.5px;
+    border-radius: 5px;
+}
+
+body {
+    background-color: #1b2a41;
+    color: #d1e8ff;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1e3a56, #1b2a41);
+    
+}
+
+.fi-rr-list {
+    position: absolute;
+    right: 10px;
+    font-size: 30px;
+    color: #4a90e2;
+}
+
+.nav-link {
+    width: 100%;
+    color: #4a90e2;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #ffd700;
+    transition: transform 0.3s ease;
+}
+
+.navbar {
+    padding-bottom: 50px;
+    margin-bottom: 50px;
+    background-color: #1e3a56;
+    background: linear-gradient(135deg, #1b2a41, #1e3a56);
+    border: 1px solid #122b45;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+#logo {
+    width: 100px;
+    border-radius: 20%;
+    position: absolute;
+    top: 20px;
+}
+
+footer {
+    margin-top: 100px;
+    background-color: #1e3a56;
+    background: linear-gradient(135deg, #1b2a41, #1e3a56);
+    height: 50px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    bottom:0px;
+    margin-top: 800px;
+}
+
+footer a {
+    color: white;
+    margin-right: 10px;
+}
+
+header {
+    z-index: 10;
+}
+
+.box {
+    margin: 20px;
+    width: 31%;
+    height: 300px;
+    background-image: url(/resources/logo/Noimg.png);
+    background-size: 100% 100%;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #1e3a56;
+    border-radius: 10px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 5;
+}
+
+.box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 20px rgba(29, 30, 49, 0.8);
+    background-color: #3b5998;
+}
+
+.container_fluid {
+    display: flex;
+    flex-direction: row;
+}
+
+.box-content {
+    position: absolute;
+    top: 240px;
+    height: 300px;
+    width: 100%;
+    background-color: rgba(27, 42, 65, 0.9);
+    text-align: center;
+    color: #d1e8ff;
+    padding: 10px;
+    transition: top 0.3s ease, background-color 0.3s ease;
+}
+
+.box-content > div {
+    color: #d1e8ff;
+}
+
+.box:hover .box-content {
+    background-color: rgba(43, 75, 110, 0.9);
+}
+
+.hidden-content {
+    bottom: 10px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display:none;
+  
+    
+}
+
+.btn {
+    background-color: #1e3a56;
+    background: linear-gradient(135deg, #1e3a56, #1b2a41);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 10px;
+    transition: background 0.3s ease;
+    width:100%
+}
+
+.btn:hover {
+    background: linear-gradient(135deg, #3b5998, #1e3a56);
+    color: #ffd700;
+}
+
+button {
+    margin-top: 30px;
+    border: 0.5px solid #4A90E2;
+    border-radius: 5%;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+    width: 10%;
+    font-size:20px;
+
+}
+
+list-group>button{
+	    width: 10%
+}
+
+.was-validated {
+    padding: 40px;
+    border-radius: 5%;
+    border: 0.5px solid #1e3a56;
+    background-color: #1b2a41;
+}
+
+input, textarea, .form-select {
+    padding: 10px;
+    background-color: #1e3a56;
+    color: #d1e8ff;
+    border: 1px solid #1e3a56;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+input:focus, textarea:focus, .form-select:focus {
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.list-group > .list-group-item, button, textarea, input, .form-select {
+    background-color: #1b2a41;
+    color: #d1e8ff;
+}
+
+.side-bar {
+    width: 100%;
+    bottom: 0px;
+    position: absolute;
+    z-index: 2;
+    background-color: #36689a;
+    background: linear-gradient(135deg, #466fac, #0f2a44);
+    border-radius: 10px;
+    box-shadow: 0 6px 10px rgba(141, 81, 81, 0.1);
+    transform: translate(calc(var(--side-bar-width) * -0.8), 0);
+    transition: transform 0.5s ease, box-shadow 0.3s ease;
+}
+
+.side-bar:hover {
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar ul > li > a {
+    color: #d1e8ff;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #466fac;
+}
+
+.side-bar ul > li:hover > a {
+    background-color: #3b5998;
+    color: #ffd700;
+}
+
+.side-bar ul > li:hover > ul {
+    background-color: #3b5998;
+    text-align: center;
+}
+
+.page-item {
+    display: inline-block;
+      border: none;
+      margin-top:10px;
+    
+}
+
+.page-link {
+    text-decoration: none;
+    color: white;
+     background-color: #1e3a56;
+     border: none;
+      padding-left: 15px; 
+    padding-right: 15px;
+   padding-top: 8px;
+    padding-bottom: 8px; 
+}
+
+.page-item.active .page-link {
+     background: linear-gradient(135deg, #3b5998, #1e3a56);
+    color: #ffd700;
+}

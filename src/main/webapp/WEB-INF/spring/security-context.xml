@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="customLoginSuccess"
+		class="com.io.security.CustomLoginSuccessHandler"></bean>
+	<bean id="customAccessDenied"
+		class="com.io.security.CustomAccessDeniedHandler"></bean>
+	<bean id="bcryptPasswordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<bean id="customUserDetailsService"
+		class="com.io.security.CustomUserDetailsService"></bean>
+		<bean id="customAuthenticationFailureHandler" class="com.io.security.CustomAuthenticationFailureHandler"/>
+		
+
+	<security:http>
+    <security:form-login 
+        login-page="/user/login" 
+        login-processing-url="/user/login" 
+        authentication-success-handler-ref="customLoginSuccess"
+        authentication-failure-url="/user/login?error=true"/>
+    <security:logout logout-url="/user/logout" invalidate-session="true"/>
+    <security:access-denied-handler error-page="/accessError"/>
+    
+      <!-- CSRF 비활성화 -->
+    <security:csrf disabled="true"/>
+</security:http>
+
+ <security:authentication-manager>
+      <security:authentication-provider user-service-ref="customUserDetailsService">
+           <security:password-encoder ref="bcryptPasswordEncoder" />
+
+      </security:authentication-provider>
+   </security:authentication-manager>
+   
+  
+
+
+</beans>

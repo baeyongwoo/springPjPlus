@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.io.mapper.BoardMapper">
+
+<select id="selectAllBoard" resultType="com.io.model.BoardDTO">
+    SELECT * 
+    FROM (
+        SELECT b.*, ui.uname, d.did, d.dname, i.uuid as buuid,i.uploadpath as buploadpath,i.filename as bfilename,i.filetype as bfiletype,
+               ROW_NUMBER() OVER (ORDER BY b.regdate DESC) AS row_num
+        FROM userinfo ui
+        JOIN dept d ON ui.did = d.did 
+        JOIN board b ON b.uemail = ui.uemail 
+        join iofile i on b.tno=i.tno 
+        <where>
+            <if test="caid != null">
+                and b.caid = #{caid}
+            </if>
+        </where>
+    ) sub
+    WHERE sub.row_num BETWEEN 0 AND 3
+</select>
+
+
+<select id="selectAllBoardOfCaid" resultType="com.io.model.BoardDTO">
+    SELECT b.*, ui.uname, d.did, d.dname
+    FROM userinfo ui
+    JOIN dept d ON ui.did = d.did
+    JOIN board b ON b.uemail = ui.uemail
+    <choose>
+        <when test="caid != null">
+            WHERE b.caid = #{caid}
+        </when>
+        <otherwise>
+            
+        </otherwise>
+    </choose>
+</select>
+
+
+
+
+	
+	<select id="selectCateAll" resultType="com.io.model.BoardDTO">
+			select caid, category from cate
+	
+	</select>
+
+
+	<select id="selectAllTempBoard"
+		resultType="com.io.model.TboardDTO">
+		select b.*, ui.uname, d.did, d.dname, c.category
+		from userinfo ui
+		join
+		dept d on
+		ui.did = d.did
+		join tboard b on b.uemail = ui.uemail
+		join cate
+		c on b.caid = c.caid
+		<where>
+			<if test="code != null">
+				and b.code = #{code}
+			</if>
+		</where>
+		order by b.tmpregdate desc
+	</select>
+	
+	
+	<select id="selectAllTempBoardOfPaging" resultType="com.io.model.TboardDTO">
+    SELECT * FROM (
+        SELECT b.*, ui.uname, d.did, d.dname, c.category, ROW_NUMBER() OVER (ORDER BY b.tmpregdate DESC) AS rn
+		FROM userinfo ui
+		JOIN dept d ON ui.did = d.did
+		JOIN tboard b ON b.uemail = ui.uemail
+		JOIN cate c ON b.caid = c.caid
+          WHERE code = #{dto.code}
+    )
+    WHERE rn BETWEEN #{cri.offset} AND #{cri.offset} + #{cri.amount} - 1
+</select>
+
+
+<select id="selectAllBoardOfPaging" resultType="com.io.model.BoardDTO">
+	SELECT * FROM (
+		  SELECT b.*, ui.uname, d.did, d.dname, c.category, ROW_NUMBER() OVER (ORDER BY b.regdate DESC) AS rn
+		FROM userinfo ui
+		JOIN dept d ON ui.did = d.did
+		JOIN board b ON b.uemail = ui.uemail
+		JOIN cate c ON b.caid = c.caid
+		<where>
+			<choose>
+				<when test="dto.caid != null">
+					b.caid = #{dto.caid}
+				</when>
+			</choose>
+		</where>
+	) 
+	WHERE rn BETWEEN #{cri.offset} AND #{cri.offset} + #{cri.amount} - 1
+</select>
+
+
+
+<insert id="insertBoards" parameterType="java.util.List">
+    INSERT INTO board (bno, title, bcontent, uemail, regdate, caid, tno)
+    SELECT board_seq.nextval, A.title, TO_CLOB(A.tmpcontent), A.uemail,
+    A.systimestamp,
+    A.caid, A.tno
+    FROM (
+    <foreach collection="list" item="item" separator=" UNION ALL ">
+        SELECT
+        #{item.tmptitle} as title,
+        #{item.tmpcontent,
+        jdbcType=CLOB} as tmpcontent,
+        #{item.uemail} as
+        uemail,
+        current_timestamp as systimestamp,
+        #{item.caid} as caid,
+        #{item.tno} as tno
+        FROM DUAL
+    </foreach>
+    ) A
+</insert>
+
+
+
+
+
+
+	<update id="updateBoardCode"
+		parameterType="com.io.model.TboardDTO">
+		update tboard set code= #{code} where tno= #{tno}
+
+	</update>
+
+
+	<insert id="updatePermitToComplete"
+		parameterType="java.util.List">
+		update tboard set code = 'complete' where code =
+		'permit'
+	</insert>
+
+
+	<resultMap id="codeCountMap" type="map">
+		<result property="code" column="code" />
+		<result property="count" column="count" />
+	</resultMap>
+
+	<select id="selectCodeCount" resultMap="codeCountMap">
+		SELECT code, COUNT(*) AS
+		count
+		FROM tboard
+		GROUP BY code
+
+		UNION ALL
+
+		SELECT
+		'complete' AS code, 0 AS
+		count
+		FROM dual
+		WHERE 'complete' NOT IN (SELECT
+		code FROM tboard)
+
+		UNION
+		ALL
+
+		SELECT 'permit' AS code, 0 AS count
+		FROM dual
+		WHERE 'permit' NOT IN
+		(SELECT code FROM tboard)
+
+
+		UNION ALL
+
+		SELECT 'ready' AS code, 0 AS count
+		FROM dual
+		WHERE 'ready' NOT IN
+		(SELECT code FROM tboard)
+
+		UNION ALL
+
+		SELECT
+		'reject' AS code, 0 AS count
+		FROM dual
+		WHERE 'reject' NOT IN (SELECT
+		code FROM tboard)
+
+
+	</select>
+
+	<select id="selectUserList" resultType="com.io.model.BoardDTO">
+		SELECT
+		ROW_NUMBER() OVER
+		(ORDER BY ui.uemail) AS row_num,
+		ui.uemail AS uemail,
+		ui.uname AS
+		uname,
+		de.dname AS dname,
+		COUNT(b.uemail) AS post_count,
+		count(tb.uemail) as
+		insert_count
+		FROM userinfo ui
+		JOIN dept de ON ui.did
+		= de.did
+		LEFT JOIN
+		tboard tb on tb.uemail = ui.uemail
+		LEFT JOIN board b ON tb.uemail =
+		b.uemail and tb.tno = b.tno
+		GROUP BY
+		ui.uemail, ui.uname, de.dname
+	</select>
+
+
+
+<!--기사 읽기/상세페이지 -->
+    <select id="readBoard" parameterType="long" resultType="com.io.model.BoardDTO">
+        SELECT a.bno,a.tno, a.title, a.regdate, a.bcontent, b.uname, b.uemail,c.caid, c.category, d.dname
+        FROM board a
+        JOIN userinfo b ON a.uemail = b.uemail
+        JOIN cate c ON a.caid = c.caid
+        JOIN dept d ON d.did = b.did
+        WHERE a.bno = #{bno}
+    </select>
+
+
+  
+    <delete id="deleteBoard" parameterType="long" >
+    DELETE FROM board
+    WHERE bno = #{bno}
+</delete>
+
+<insert id="insertCategory" parameterType="com.io.model.BoardDTO">
+	INSERT INTO cate (caid, category) values(#{caid}, #{category})
+</insert>
+
+<select id="selectDept" resultType="com.io.model.DeptDTO">
+
+	SELECT * FROM dept
+</select>
+
+
+
+</mapper>

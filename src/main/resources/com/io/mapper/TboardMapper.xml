@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.io.mapper.TboardMapper">
+
+	<update id="updateCode" parameterType="com.io.model.TboardDTO"> update tboard set
+		code=#{code} where tno=#{tno}
+
+	</update>
+	<insert id="postTboard">
+		<selectKey keyProperty="tno" order="BEFORE"
+			resultType="long">
+			select tboard_seq.NEXTVAL from dual
+		</selectKey>
+		INSERT INTO tboard (tno,tmptitle, tmpcontent, tmpregdate,
+		uemail,caid,code)
+		VALUES
+		(#{tno},#{tmptitle},#{tmpcontent},CURRENT_TIMESTAMP,#{uemail},#{caid},'ready')
+	</insert>
+	<!-- 게시글 수정 쿼리 -->
+	<update id="editTboard" parameterType="com.io.model.TboardDTO">
+		UPDATE tboard
+		SET tmptitle = #{tmptitle},
+		tmpcontent = #{tmpcontent},
+		code = 'ready'
+		WHERE tno = #{tno}
+	</update>
+
+	<!-- 게시글 삭제 쿼리 -->
+	<delete id="deleteTboard" parameterType="long">
+		DELETE FROM tboard
+		WHERE tno = #{tno}
+	</delete>
+
+	<!-- 게시글 조회 쿼리 -->
+	<select id="selectTboardById" parameterType="long"
+		resultType="com.io.model.TboardDTO">
+		SELECT
+		t.tno,
+		t.tmptitle,
+		t.tmpregdate,
+		t.tmpcontent,
+		u.uname ,
+		c.category ,
+		d.dname
+		FROM
+		tboard t
+		JOIN userinfo u ON t.uemail =
+		u.uemail
+		JOIN cate c ON t.caid = c.caid
+		JOIN dept d ON u.did = d.did
+		WHERE t.tno = #{tno}
+	</select>
+</mapper>

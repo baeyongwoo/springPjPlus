@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.io.mapper.UserMapper">
+	<!--회원가입 -->
+	<insert id="join" parameterType="com.io.model.UserDTO">
+		insert into userinfo (uemail,
+		upwd, uname, did)
+		values (#{uemail, jdbcType=VARCHAR}, #{upwd,
+		jdbcType=VARCHAR}, #{uname,
+		jdbcType=VARCHAR}, #{did,
+		jdbcType=VARCHAR})
+	</insert>
+	<!--회원정보수정 -->
+	<update id="updateUser" parameterType="com.io.model.UserDTO">
+		UPDATE userinfo
+		SET upwd =
+		#{upwd},
+		uname = #{uname},
+		did = #{did}
+		WHERE uemail = #{uemail}
+	</update>
+
+
+	<delete id="deleteUser" parameterType="String">
+		delete from userinfo where
+		uemail=#{uemail}
+	</delete>
+
+	<resultMap type="com.io.model.UserDTO" id="userMap">
+		<id property="uemail" column="uemail" />
+		<result property="uemail" column="uemail" />
+		<result property="upwd" column="upwd" />
+		<result property="uname" column="uname" />
+		<collection property="authList" resultMap="authMap"></collection>
+	</resultMap>
+
+	<resultMap type="com.io.model.AuthVO" id="authMap">
+		<result property="uemail" column="uemail" />
+		<result property="authority" column="authority" />
+	</resultMap>
+
+	<select id="selectUser" resultMap="userMap">
+		select ui.uemail, ui.upwd, ui.uname, ui.did, auth.uemail as auth_uemail,
+		auth.authority
+		from userinfo ui left outer join auth auth
+		on ui.uemail=auth.uemail
+		where ui.uemail=#{userid}
+	</select>
+
+
+
+
+	<update id="insertUserAuth">
+		INSERT ALL
+		<foreach collection="authList" item="item" separator=" ">
+			INTO
+			AUTH(uemail,AUTHORITY) values(#{item.uemail}, #{item.authority})
+		</foreach>
+		select * from dual
+
+
+	</update>
+</mapper>

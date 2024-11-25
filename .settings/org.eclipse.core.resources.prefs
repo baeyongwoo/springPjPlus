@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//src/main/webapp/WEB-INF/views/accessError.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/admin/category.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/admin/newsList.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/board/list.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/board/read.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/user/modify.jsp=UTF-8
+encoding//src/main/webapp/resources/heater/footer.jsp=UTF-8
+encoding//src/main/webapp/resources/heater/header.jsp=UTF-8
